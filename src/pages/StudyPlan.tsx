@@ -3,7 +3,6 @@ import { useApp } from '../state/AppContext';
 import {
   FIRST_YEAR_CURRICULUM,
   TRIMESTER_SUMMARIES,
-  CourseItem,
 } from '../data/curriculum';
 import {
   Calendar,
@@ -16,15 +15,15 @@ import {
 } from 'lucide-react';
 
 export const StudyPlan: React.FC = () => {
-  const { careers, selectedCareerId, setSelectedCareerId, lang } = useApp();
+  const {
+    careers,
+    selectedCareerId,
+    setSelectedCareerId,
+    lang,
+    courseStatuses,
+    cycleCourseStatus,
+  } = useApp();
   const [selectedTrimester, setSelectedTrimester] = useState<1 | 2 | 3>(1);
-  const [statuses, setStatuses] = useState<Record<string, CourseItem['defaultStatus']>>(() => {
-    const initial: Record<string, CourseItem['defaultStatus']> = {};
-    FIRST_YEAR_CURRICULUM.forEach((c) => {
-      initial[c.code] = c.defaultStatus;
-    });
-    return initial;
-  });
 
   const activeCareer =
     careers.find((c) => c.id === selectedCareerId) || careers[0];
@@ -98,26 +97,17 @@ export const StudyPlan: React.FC = () => {
     },
   }[lang];
 
-  const cycleStatus = (code: string) => {
-    setStatuses((prev) => {
-      const current = prev[code];
-      const next: CourseItem['defaultStatus'] =
-        current === 'planned'
-          ? 'in_progress'
-          : current === 'in_progress'
-          ? 'completed'
-          : 'planned';
-      return { ...prev, [code]: next };
-    });
-  };
+  const summary = TRIMESTER_SUMMARIES.find(
+    (s) => s.trimester === selectedTrimester
+  )!;
+  const courses = FIRST_YEAR_CURRICULUM.filter(
+    (c) => c.trimester === selectedTrimester
+  );
 
-  const summary = TRIMESTER_SUMMARIES.find((s) => s.trimester === selectedTrimester)!;
-  const courses = FIRST_YEAR_CURRICULUM.filter((c) => c.trimester === selectedTrimester);
-
-  // Живой подсчёт кредитов по выбранным статусам
+  // Живой подсчёт кредитов по глобальным статусам из AppContext
   const dynamicStats = courses.reduce(
     (acc, course) => {
-      const st = statuses[course.code];
+      const st = courseStatuses[course.code] ?? course.defaultStatus;
       acc.total += course.credits;
       if (st === 'in_progress') acc.inProgress += course.credits;
       if (st === 'completed') acc.completed += course.credits;
@@ -182,21 +172,24 @@ export const StudyPlan: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
           <div className="text-xs text-slate-500">{ui.planned}</div>
           <div className="text-2xl font-extrabold mt-1">
-            {dynamicStats.total} <span className="text-sm font-normal">{ui.creditsUnit}</span>
+            {dynamicStats.total}{' '}
+            <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
           <div className="text-xs text-slate-500">{ui.inProgress}</div>
           <div className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1">
-            {dynamicStats.inProgress} <span className="text-sm font-normal">{ui.creditsUnit}</span>
+            {dynamicStats.inProgress}{' '}
+            <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
           <div className="text-xs text-slate-500">{ui.completed}</div>
           <div className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">
-            {dynamicStats.completed} <span className="text-sm font-normal">{ui.creditsUnit}</span>
+            {dynamicStats.completed}{' '}
+            <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
         </div>
 
@@ -231,8 +224,11 @@ export const StudyPlan: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {courses.map((course) => {
-                const isRelevant = course.boostsCareers.includes(activeCareer.id);
-                const status = statuses[course.code];
+                const isRelevant = course.boostsCareers.includes(
+                  activeCareer.id
+                );
+                const status =
+                  courseStatuses[course.code] ?? course.defaultStatus;
 
                 return (
                   <tr
@@ -275,7 +271,7 @@ export const StudyPlan: React.FC = () => {
 
                     <td className="p-3.5">
                       <button
-                        onClick={() => cycleStatus(course.code)}
+                        onClick={() => cycleCourseStatus(course.code)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition ${
                           status === 'completed'
                             ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
