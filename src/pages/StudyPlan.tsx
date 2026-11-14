@@ -1,199 +1,304 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../state/AppContext';
-import { Calendar, AlertTriangle, CheckCircle, Cpu } from 'lucide-react';
+import {
+  FIRST_YEAR_CURRICULUM,
+  TRIMESTER_SUMMARIES,
+  CourseItem,
+} from '../data/curriculum';
+import {
+  Calendar,
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+  AlertTriangle,
+  GraduationCap,
+} from 'lucide-react';
 
 export const StudyPlan: React.FC = () => {
-  const {
-    careers,
-    selectedCareerId,
-    setSelectedCareerId,
-    profile,
-    updateProfile,
-    targetModules,
-    cspResult,
-    completeModule,
-    lang,
-    t
-  } = useApp();
+  const { careers, selectedCareerId, setSelectedCareerId, lang } = useApp();
+  const [selectedTrimester, setSelectedTrimester] = useState<1 | 2 | 3>(1);
+  const [statuses, setStatuses] = useState<Record<string, CourseItem['defaultStatus']>>(() => {
+    const initial: Record<string, CourseItem['defaultStatus']> = {};
+    FIRST_YEAR_CURRICULUM.forEach((c) => {
+      initial[c.code] = c.defaultStatus;
+    });
+    return initial;
+  });
 
-  const career = careers.find((c) => c.id === selectedCareerId) ?? careers[0];
-  const { smart, plain } = cspResult;
+  const activeCareer =
+    careers.find((c) => c.id === selectedCareerId) || careers[0];
 
-  const weeksArray = Array.from({ length: profile.constraints.deadlineWeeks }, (_, i) => i + 1);
+  const ui = {
+    kk: {
+      title: '1-курс оқу жоспары және мансаптық байланыс',
+      subtitle:
+        'Университет пәндерінің таңдалған мамандыққа әсерін және триместрлік кредит жүктемесін бақылаңыз.',
+      targetCareer: 'Мақсатты мамандық:',
+      trimesterTab: (n: number) => `${n}-триместр`,
+      planned: 'Жоспарда',
+      inProgress: 'Оқылуда',
+      completed: 'Игерілді',
+      creditsUnit: 'кр.',
+      relevantBadge: 'Мамандыққа тікелей әсер етеді',
+      statusLabels: {
+        in_progress: 'Оқылуда',
+        planned: 'Жоспарланған',
+        completed: 'Игерілді',
+      },
+      colCode: 'Код',
+      colSubject: 'Пән атауы',
+      colComp: 'Компонент',
+      colCredits: 'Кредит',
+      colStatus: 'Мәртебе (басып өзгертіңіз)',
+    },
+    ru: {
+      title: 'Учебный план 1-го курса и связь с карьерой',
+      subtitle:
+        'Отслеживайте кредитную нагрузку по триместрам и предметы, которые напрямую прокачивают выбранную профессию.',
+      targetCareer: 'Целевая профессия:',
+      trimesterTab: (n: number) => `${n} триместр`,
+      planned: 'В плане',
+      inProgress: 'Изучается',
+      completed: 'Освоено',
+      creditsUnit: 'кр.',
+      relevantBadge: 'Профильный для профессии',
+      statusLabels: {
+        in_progress: 'Изучается',
+        planned: 'Запланирована',
+        completed: 'Освоено',
+      },
+      colCode: 'Код',
+      colSubject: 'Дисциплина',
+      colComp: 'Компонент',
+      colCredits: 'Кредиты',
+      colStatus: 'Статус (нажмите для смены)',
+    },
+    en: {
+      title: '1st-Year Curriculum & Career Alignment',
+      subtitle:
+        'Track trimester credit workload and see which university courses directly boost your target career.',
+      targetCareer: 'Target Career:',
+      trimesterTab: (n: number) => `Trimester ${n}`,
+      planned: 'Planned',
+      inProgress: 'In Progress',
+      completed: 'Completed',
+      creditsUnit: 'cr.',
+      relevantBadge: 'Core Career Booster',
+      statusLabels: {
+        in_progress: 'In Progress',
+        planned: 'Planned',
+        completed: 'Completed',
+      },
+      colCode: 'Code',
+      colSubject: 'Course',
+      colComp: 'Comp.',
+      colCredits: 'Credits',
+      colStatus: 'Status (click to toggle)',
+    },
+  }[lang];
+
+  const cycleStatus = (code: string) => {
+    setStatuses((prev) => {
+      const current = prev[code];
+      const next: CourseItem['defaultStatus'] =
+        current === 'planned'
+          ? 'in_progress'
+          : current === 'in_progress'
+          ? 'completed'
+          : 'planned';
+      return { ...prev, [code]: next };
+    });
+  };
+
+  const summary = TRIMESTER_SUMMARIES.find((s) => s.trimester === selectedTrimester)!;
+  const courses = FIRST_YEAR_CURRICULUM.filter((c) => c.trimester === selectedTrimester);
+
+  // Живой подсчёт кредитов по выбранным статусам
+  const dynamicStats = courses.reduce(
+    (acc, course) => {
+      const st = statuses[course.code];
+      acc.total += course.credits;
+      if (st === 'in_progress') acc.inProgress += course.credits;
+      if (st === 'completed') acc.completed += course.credits;
+      return acc;
+    },
+    { total: 0, inProgress: 0, completed: 0 }
+  );
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-bold flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-indigo-600" /> Personal Weekly Study Plan (CSP)
-            </h1>
-            <p className="text-xs text-slate-500">
-              Scheduled automatically using Backtracking + MRV + Degree Heuristic + Forward Checking
-            </p>
-          </div>
+      {/* Шапка раздела с выбором профессии */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
+        <div>
+          <h1 className="text-xl font-bold flex items-center gap-2">
+            <GraduationCap className="w-6 h-6 text-indigo-600 shrink-0" />
+            {ui.title}
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            {ui.subtitle}
+          </p>
+        </div>
+
+        <div className="shrink-0">
+          <label className="block text-[11px] font-semibold uppercase text-slate-400 mb-1">
+            {ui.targetCareer}
+          </label>
           <select
-            value={career.id}
+            value={activeCareer.id}
             onChange={(e) => setSelectedCareerId(e.target.value)}
-            className="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-sm font-medium"
+            className="w-full md:w-64 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             {careers.map((c) => (
-              <option key={c.id} value={c.id} className="dark:bg-slate-900">
+              <option key={c.id} value={c.id}>
                 {c.title[lang]}
               </option>
             ))}
           </select>
         </div>
+      </div>
 
-        <div className="grid sm:grid-cols-3 gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div>
-            <label className="block text-xs text-slate-500 mb-1">{t.common.hoursPerWeek}</label>
-            <input
-              type="number"
-              min={1}
-              max={60}
-              value={profile.constraints.hoursPerWeek}
-              onChange={(e) =>
-                updateProfile({
-                  ...profile,
-                  constraints: { ...profile.constraints, hoursPerWeek: Math.max(1, Number(e.target.value)) }
-                })
-              }
-              className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-500 mb-1">{t.common.maxModules}</label>
-            <input
-              type="number"
-              min={1}
-              max={6}
-              value={profile.constraints.maxModulesPerWeek}
-              onChange={(e) =>
-                updateProfile({
-                  ...profile,
-                  constraints: { ...profile.constraints, maxModulesPerWeek: Math.max(1, Number(e.target.value)) }
-                })
-              }
-              className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-500 mb-1">{t.common.deadlineWeeks}</label>
-            <input
-              type="number"
-              min={1}
-              max={52}
-              value={profile.constraints.deadlineWeeks}
-              onChange={(e) =>
-                updateProfile({
-                  ...profile,
-                  constraints: { ...profile.constraints, deadlineWeeks: Math.max(1, Number(e.target.value)) }
-                })
-              }
-              className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent text-sm"
-            />
+      {/* Переключатель триместров */}
+      <div className="flex flex-wrap gap-2">
+        {TRIMESTER_SUMMARIES.map((trim) => (
+          <button
+            key={trim.trimester}
+            onClick={() => setSelectedTrimester(trim.trimester)}
+            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+              selectedTrimester === trim.trimester
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Calendar className="w-4 h-4" />
+            <span>{ui.trimesterTab(trim.trimester)}</span>
+            <span className="opacity-75 font-normal">({trim.period[lang]})</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Сводка по кредитам и предупреждение о нагрузке */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+          <div className="text-xs text-slate-500">{ui.planned}</div>
+          <div className="text-2xl font-extrabold mt-1">
+            {dynamicStats.total} <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
-              <Cpu className="w-3.5 h-3.5" /> MRV + Forward Checking:
-            </span>
-            <span>
-              Nodes: <strong>{smart.nodesExplored}</strong> | Backtracks: <strong>{smart.backtracks}</strong> | {smart.elapsedMs}ms
-            </span>
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+          <div className="text-xs text-slate-500">{ui.inProgress}</div>
+          <div className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1">
+            {dynamicStats.inProgress} <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-600 dark:text-slate-400">Plain Backtracking:</span>
-            <span>
-              Nodes: <strong>{plain.nodesExplored}</strong> | Backtracks: <strong>{plain.backtracks}</strong> | {plain.elapsedMs}ms
-            </span>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+          <div className="text-xs text-slate-500">{ui.completed}</div>
+          <div className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">
+            {dynamicStats.completed} <span className="text-sm font-normal">{ui.creditsUnit}</span>
           </div>
+        </div>
+
+        <div
+          className={`p-4 rounded-xl border flex items-start gap-2.5 text-xs ${
+            selectedTrimester === 2
+              ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300'
+              : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800 text-indigo-800 dark:text-indigo-300'
+          }`}
+        >
+          {selectedTrimester === 2 ? (
+            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+          ) : (
+            <BookOpen className="w-4 h-4 shrink-0 mt-0.5" />
+          )}
+          <span>{summary.workloadNote[lang]}</span>
         </div>
       </div>
 
-      {!smart.solved && (
-        <div className="p-5 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 space-y-2">
-          <div className="flex items-center gap-2 font-bold text-red-700 dark:text-red-300">
-            <AlertTriangle className="w-5 h-5" /> Infeasible Schedule Detected
-          </div>
-          <p className="text-sm text-red-700 dark:text-red-300">
-            <strong>Conflict:</strong> {smart.conflictReason}
-          </p>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300">
-            <strong>Suggested Relaxation:</strong> {smart.relaxationSuggestion}
-          </p>
-        </div>
-      )}
+      {/* Таблица дисциплин триместра */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-800/70 text-xs uppercase text-slate-500">
+              <tr>
+                <th className="p-3.5">{ui.colCode}</th>
+                <th className="p-3.5">{ui.colSubject}</th>
+                <th className="p-3.5">{ui.colComp}</th>
+                <th className="p-3.5">{ui.colCredits}</th>
+                <th className="p-3.5">{ui.colStatus}</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {courses.map((course) => {
+                const isRelevant = course.boostsCareers.includes(activeCareer.id);
+                const status = statuses[course.code];
 
-      {smart.solved && (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {weeksArray.map((week) => {
-            const isBlocked = profile.constraints.blockedWeeks.includes(week);
-            const modsInWeek = targetModules.filter((m) => smart.assignment[m.id] === week);
-            const totalHours = modsInWeek.reduce((s, m) => s + m.hours, 0);
+                return (
+                  <tr
+                    key={course.code}
+                    className={`transition ${
+                      isRelevant
+                        ? 'bg-indigo-50/40 dark:bg-indigo-950/20 hover:bg-indigo-50/70 dark:hover:bg-indigo-950/30'
+                        : 'hover:bg-slate-50/70 dark:hover:bg-slate-800/40'
+                    }`}
+                  >
+                    <td className="p-3.5 font-mono text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                      {course.code}
+                    </td>
 
-            return (
-              <div
-                key={week}
-                className={`p-4 rounded-2xl border ${
-                  isBlocked
-                    ? 'bg-slate-100/70 dark:bg-slate-900/40 border-dashed border-slate-300 dark:border-slate-700 opacity-75'
-                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
-                }`}
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <span className="font-bold text-sm">
-                    {t.common.week} {week}
-                  </span>
-                  {isBlocked ? (
-                    <span className="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                      Blocked (Exam/Holiday)
-                    </span>
-                  ) : (
-                    <span className="text-xs text-slate-500">
-                      {totalHours} / {profile.constraints.hoursPerWeek} {t.common.hours}
-                    </span>
-                  )}
-                </div>
-
-                {modsInWeek.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic">No modules scheduled</p>
-                ) : (
-                  <div className="space-y-2.5">
-                    {modsInWeek.map((m) => (
-                      <div
-                        key={m.id}
-                        className="p-3 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900"
-                      >
-                        <div className="font-semibold text-sm">{m.title[lang]}</div>
-                        <div className="text-xs text-slate-500 mt-1 flex justify-between">
-                          <span>
-                            {m.hours}
-                            {t.common.hours} • {t.common.diffLabels[m.difficulty]}
-                          </span>
-                          <span>
-                            {t.skills[m.skillId]} → {m.targetLevel}/5
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => completeModule(m)}
-                          className="mt-2 w-full py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-1 transition"
-                        >
-                          <CheckCircle className="w-3.5 h-3.5" /> {t.common.markDone}
-                        </button>
+                    <td className="p-3.5">
+                      <div className="font-semibold text-slate-900 dark:text-slate-100">
+                        {course.title[lang]}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      {isRelevant && (
+                        <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300">
+                          <Sparkles className="w-3 h-3" />
+                          {ui.relevantBadge}
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="p-3.5">
+                      <span
+                        className={`px-2 py-0.5 rounded text-xs font-bold ${
+                          course.component === 'ВК'
+                            ? 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300'
+                            : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                        }`}
+                      >
+                        {course.component}
+                      </span>
+                    </td>
+
+                    <td className="p-3.5 font-bold">{course.credits}</td>
+
+                    <td className="p-3.5">
+                      <button
+                        onClick={() => cycleStatus(course.code)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition ${
+                          status === 'completed'
+                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                            : status === 'in_progress'
+                            ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                        }`}
+                      >
+                        {status === 'completed' ? (
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                        ) : (
+                          <Clock className="w-3.5 h-3.5" />
+                        )}
+                        {ui.statusLabels[status]}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 };
