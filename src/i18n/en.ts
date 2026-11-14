@@ -1,0 +1,71 @@
+export const en = {
+  appName: 'CareerPath AI',
+  tagline: 'AI Career & Skill Development Planner for Students in Kazakhstan',
+  disclaimer: 'Educational tool: all values are pedagogical estimates and do not replace professional career counselling. No personal data leaves your browser.',
+  nav: {
+    onboarding: 'Assessment',
+    dashboard: 'Dashboard',
+    compare: 'Compare',
+    skillGap: 'Skill Gaps',
+    studyPlan: 'Study Plan',
+    progress: 'Progress',
+    bayes: 'Bayes Explorer',
+    ml: 'Model Lab',
+    csp: 'CSP Visualizer',
+    howItWorks: 'How It Works'
+  },
+  interests: {
+    mathLogic: 'Math & Logic',
+    creativityDesign: 'Creativity & Design',
+    workingWithPeople: 'Working with People',
+    buildingEngineering: 'Building & Engineering',
+    dataResearch: 'Data & Research',
+    communication: 'Communication'
+  },
+  interestLevels: ['None (0)', 'Low (1)', 'Medium (2)', 'High (3)'],
+  aptitudes: {
+    analytical: 'Analytical Aptitude',
+    creative: 'Creative Aptitude',
+    social: 'Social Aptitude',
+    technical: 'Technical Aptitude'
+  },
+  skills: {
+    programming: 'Programming',
+    algorithms: 'Algorithms',
+    mathStats: 'Math & Statistics',
+    dataAnalysis: 'Data Analysis',
+    machineLearning: 'Machine Learning',
+    uiUxDesign: 'UX/UI Design',
+    cybersecurity: 'Cybersecurity',
+    networking: 'Networking',
+    projectMgmt: 'Project Management',
+    productStrategy: 'Product Strategy',
+    digitalMarketing: 'Digital Marketing',
+    financeAccounting: 'Finance & Accounting',
+    engineeringCad: 'Engineering CAD',
+    communication: 'Communication',
+    pedagogy: 'Pedagogy'
+  },
+  common: {
+    save: 'Save',
+    reset: 'Reset',
+    exportJson: 'Export JSON',
+    importJson: 'Import JSON',
+    presets: 'Demo Profiles',
+    hoursPerWeek: 'Hours per week',
+    maxModules: 'Max modules / week',
+    deadlineWeeks: 'Deadline (weeks)',
+    blockedWeeks: 'Blocked weeks (comma-separated, e.g. 3, 6)',
+    week: 'Week',
+    hours: 'h',
+    difficulty: 'Difficulty',
+    diffLabels: ['', 'Easy', 'Medium', 'Hard'],
+    completed: 'Completed',
+    markDone: 'Mark Done',
+    regenerate: 'Regenerate',
+    run: 'Run',
+    step: 'Step',
+    play: 'Play',
+    pause: 'Pause'
+  }
+};

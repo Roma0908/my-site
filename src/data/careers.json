@@ -1,0 +1,858 @@
+[
+  {
+    "id": "software_dev",
+    "title": {
+      "kk": "Бағдарламалық жасақтама әзірлеуші",
+      "ru": "Разработчик программного обеспечения",
+      "en": "Software Developer"
+    },
+    "desc": {
+      "kk": "Веб, мобильді және серверлік қосымшаларды жобалау және әзірлеу.",
+      "ru": "Проектирование и разработка веб-, мобильных и серверных приложений.",
+      "en": "Designing and building web, mobile, and backend applications."
+    },
+    "skills": {
+      "programming": 5,
+      "algorithms": 4,
+      "mathStats": 3,
+      "dataAnalysis": 2,
+      "machineLearning": 1,
+      "uiUxDesign": 2,
+      "cybersecurity": 2,
+      "networking": 3,
+      "projectMgmt": 2,
+      "productStrategy": 1,
+      "digitalMarketing": 0,
+      "financeAccounting": 0,
+      "engineeringCad": 0,
+      "communication": 3,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.45,
+      "creative": 0.15,
+      "social": 0.1,
+      "technical": 0.3
+    },
+    "modules": [
+      {
+        "id": "sd_m1",
+        "title": {
+          "kk": "Алгоритмдер мен деректер құрылымы",
+          "ru": "Алгоритмы и структуры данных",
+          "en": "Algorithms & Data Structures"
+        },
+        "skillId": "algorithms",
+        "targetLevel": 4,
+        "hours": 14,
+        "difficulty": 3,
+        "prereqs": []
+      },
+      {
+        "id": "sd_m2",
+        "title": {
+          "kk": "Заманауи бағдарламалау негіздері",
+          "ru": "Современная разработка ПО",
+          "en": "Modern Software Engineering"
+        },
+        "skillId": "programming",
+        "targetLevel": 5,
+        "hours": 16,
+        "difficulty": 2,
+        "prereqs": [
+          "sd_m1"
+        ]
+      },
+      {
+        "id": "sd_m3",
+        "title": {
+          "kk": "Компьютерлік желілер және API",
+          "ru": "Компьютерные сети и API",
+          "en": "Networking & REST APIs"
+        },
+        "skillId": "networking",
+        "targetLevel": 3,
+        "hours": 8,
+        "difficulty": 1,
+        "prereqs": []
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "data_analyst",
+    "title": {
+      "kk": "Деректер талдаушысы",
+      "ru": "Аналитик данных",
+      "en": "Data Analyst"
+    },
+    "desc": {
+      "kk": "Бизнес-шешімдер қабылдау үшін деректерді жинау, тазалау және визуализациялау.",
+      "ru": "Сбор, очистка и визуализация данных для принятия бизнес-решений.",
+      "en": "Collecting, cleaning, and visualizing data to drive business decisions."
+    },
+    "skills": {
+      "programming": 3,
+      "algorithms": 2,
+      "mathStats": 4,
+      "dataAnalysis": 5,
+      "machineLearning": 2,
+      "uiUxDesign": 1,
+      "cybersecurity": 1,
+      "networking": 1,
+      "projectMgmt": 2,
+      "productStrategy": 2,
+      "digitalMarketing": 1,
+      "financeAccounting": 2,
+      "engineeringCad": 0,
+      "communication": 3,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.55,
+      "creative": 0.1,
+      "social": 0.15,
+      "technical": 0.2
+    },
+    "modules": [
+      {
+        "id": "da_m1",
+        "title": {
+          "kk": "Ықтималдық және статистика",
+          "ru": "Теория вероятностей и статистика",
+          "en": "Probability & Statistics"
+        },
+        "skillId": "mathStats",
+        "targetLevel": 4,
+        "hours": 12,
+        "difficulty": 2,
+        "prereqs": []
+      },
+      {
+        "id": "da_m2",
+        "title": {
+          "kk": "SQL және деректерді талдау",
+          "ru": "SQL и анализ данных",
+          "en": "SQL & Exploratory Data Analysis"
+        },
+        "skillId": "dataAnalysis",
+        "targetLevel": 5,
+        "hours": 14,
+        "difficulty": 2,
+        "prereqs": [
+          "da_m1"
+        ]
+      },
+      {
+        "id": "da_m3",
+        "title": {
+          "kk": "Деректерді визуализациялау",
+          "ru": "Визуализация данных и сторителлинг",
+          "en": "Data Visualization & Storytelling"
+        },
+        "skillId": "communication",
+        "targetLevel": 3,
+        "hours": 6,
+        "difficulty": 1,
+        "prereqs": [
+          "da_m2"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "ml_engineer",
+    "title": {
+      "kk": "ML-инженер",
+      "ru": "ML-инженер",
+      "en": "Machine Learning Engineer"
+    },
+    "desc": {
+      "kk": "Машиналық оқыту модельдерін құру, оқыту және өндіріске енгізу.",
+      "ru": "Создание, обучение и внедрение моделей машинного обучения в продакшн.",
+      "en": "Building, training, and deploying machine learning models into production."
+    },
+    "skills": {
+      "programming": 4,
+      "algorithms": 4,
+      "mathStats": 5,
+      "dataAnalysis": 4,
+      "machineLearning": 5,
+      "uiUxDesign": 0,
+      "cybersecurity": 1,
+      "networking": 2,
+      "projectMgmt": 1,
+      "productStrategy": 1,
+      "digitalMarketing": 0,
+      "financeAccounting": 0,
+      "engineeringCad": 0,
+      "communication": 2,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.5,
+      "creative": 0.1,
+      "social": 0.05,
+      "technical": 0.35
+    },
+    "modules": [
+      {
+        "id": "ml_m1",
+        "title": {
+          "kk": "Сызықтық алгебра және математикалық талдау",
+          "ru": "Линейная алгебра и матанализ",
+          "en": "Linear Algebra & Calculus"
+        },
+        "skillId": "mathStats",
+        "targetLevel": 5,
+        "hours": 15,
+        "difficulty": 3,
+        "prereqs": []
+      },
+      {
+        "id": "ml_m2",
+        "title": {
+          "kk": "Классикалық машиналық оқыту",
+          "ru": "Классическое машинное обучение",
+          "en": "Classical Machine Learning"
+        },
+        "skillId": "machineLearning",
+        "targetLevel": 5,
+        "hours": 16,
+        "difficulty": 3,
+        "prereqs": [
+          "ml_m1"
+        ]
+      },
+      {
+        "id": "ml_m3",
+        "title": {
+          "kk": "MLOps және модельдерді орналастыру",
+          "ru": "MLOps и деплой моделей",
+          "en": "MLOps & Model Deployment"
+        },
+        "skillId": "programming",
+        "targetLevel": 4,
+        "hours": 10,
+        "difficulty": 2,
+        "prereqs": [
+          "ml_m2"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "ux_ui_designer",
+    "title": {
+      "kk": "UX/UI дизайнері",
+      "ru": "UX/UI дизайнер",
+      "en": "UX/UI Designer"
+    },
+    "desc": {
+      "kk": "Пайдаланушыға ыңғайлы және эстетикалық цифрлық интерфейстерді жобалау.",
+      "ru": "Проектирование удобных и эстетичных цифровых интерфейсов.",
+      "en": "Designing intuitive, accessible, and aesthetic digital interfaces."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 0,
+      "mathStats": 1,
+      "dataAnalysis": 2,
+      "machineLearning": 0,
+      "uiUxDesign": 5,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 2,
+      "productStrategy": 3,
+      "digitalMarketing": 2,
+      "financeAccounting": 0,
+      "engineeringCad": 1,
+      "communication": 4,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.15,
+      "creative": 0.55,
+      "social": 0.2,
+      "technical": 0.1
+    },
+    "modules": [
+      {
+        "id": "ux_m1",
+        "title": {
+          "kk": "UX зерттеу және прототиптеу",
+          "ru": "UX-исследования и прототипирование",
+          "en": "UX Research & Wireframing"
+        },
+        "skillId": "uiUxDesign",
+        "targetLevel": 4,
+        "hours": 10,
+        "difficulty": 1,
+        "prereqs": []
+      },
+      {
+        "id": "ux_m2",
+        "title": {
+          "kk": "Дизайн-жүйелер және UI",
+          "ru": "Дизайн-системы и визуальный UI",
+          "en": "Design Systems & Visual UI"
+        },
+        "skillId": "uiUxDesign",
+        "targetLevel": 5,
+        "hours": 12,
+        "difficulty": 2,
+        "prereqs": [
+          "ux_m1"
+        ]
+      },
+      {
+        "id": "ux_m3",
+        "title": {
+          "kk": "Өнімдік дизайн стратегиясы",
+          "ru": "Продуктовый дизайн и метрики",
+          "en": "Product Design Strategy"
+        },
+        "skillId": "productStrategy",
+        "targetLevel": 3,
+        "hours": 8,
+        "difficulty": 2,
+        "prereqs": [
+          "ux_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "cybersecurity",
+    "title": {
+      "kk": "Киберқауіпсіздік талдаушысы",
+      "ru": "Аналитик кибербезопасности",
+      "en": "Cybersecurity Analyst"
+    },
+    "desc": {
+      "kk": "Ақпараттық жүйелер мен желілерді кибершабуылдардан қорғау.",
+      "ru": "Защита информационных систем и сетей от кибератак и утечек.",
+      "en": "Protecting information systems and networks from cyber threats."
+    },
+    "skills": {
+      "programming": 3,
+      "algorithms": 3,
+      "mathStats": 2,
+      "dataAnalysis": 3,
+      "machineLearning": 1,
+      "uiUxDesign": 0,
+      "cybersecurity": 5,
+      "networking": 5,
+      "projectMgmt": 2,
+      "productStrategy": 1,
+      "digitalMarketing": 0,
+      "financeAccounting": 0,
+      "engineeringCad": 0,
+      "communication": 2,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.45,
+      "creative": 0.1,
+      "social": 0.05,
+      "technical": 0.4
+    },
+    "modules": [
+      {
+        "id": "cs_m1",
+        "title": {
+          "kk": "Желілік қауіпсіздік хаттамалары",
+          "ru": "Сетевая безопасность и протоколы",
+          "en": "Network Security & Protocols"
+        },
+        "skillId": "networking",
+        "targetLevel": 5,
+        "hours": 12,
+        "difficulty": 2,
+        "prereqs": []
+      },
+      {
+        "id": "cs_m2",
+        "title": {
+          "kk": "Осалдықтарды талдау және қорғау",
+          "ru": "Анализ уязвимостей и SOC",
+          "en": "Vulnerability Analysis & SOC"
+        },
+        "skillId": "cybersecurity",
+        "targetLevel": 5,
+        "hours": 15,
+        "difficulty": 3,
+        "prereqs": [
+          "cs_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "product_manager",
+    "title": {
+      "kk": "Өнім менеджері (Product Manager)",
+      "ru": "Продакт-менеджер",
+      "en": "Product Manager"
+    },
+    "desc": {
+      "kk": "Өнімнің даму стратегиясын анықтау, команда мен пайдаланушы қажеттіліктерін байланыстыру.",
+      "ru": "Определение стратегии продукта, связка бизнеса, разработки и пользователей.",
+      "en": "Defining product strategy and aligning engineering, business, and user needs."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 1,
+      "mathStats": 2,
+      "dataAnalysis": 4,
+      "machineLearning": 1,
+      "uiUxDesign": 3,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 4,
+      "productStrategy": 5,
+      "digitalMarketing": 3,
+      "financeAccounting": 2,
+      "engineeringCad": 0,
+      "communication": 5,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.3,
+      "creative": 0.25,
+      "social": 0.35,
+      "technical": 0.1
+    },
+    "modules": [
+      {
+        "id": "pm_m1",
+        "title": {
+          "kk": "Өнімдік аналитика және гипотезалар",
+          "ru": "Продуктовая аналитика и CustDev",
+          "en": "Product Analytics & Discovery"
+        },
+        "skillId": "productStrategy",
+        "targetLevel": 5,
+        "hours": 12,
+        "difficulty": 2,
+        "prereqs": []
+      },
+      {
+        "id": "pm_m2",
+        "title": {
+          "kk": "Стейкхолдерлермен коммуникация",
+          "ru": "Коммуникация со стейкхолдерами",
+          "en": "Stakeholder Communication"
+        },
+        "skillId": "communication",
+        "targetLevel": 5,
+        "hours": 8,
+        "difficulty": 1,
+        "prereqs": []
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "digital_marketer",
+    "title": {
+      "kk": "Цифрлық маркетолог",
+      "ru": "Цифровой маркетолог",
+      "en": "Digital Marketer"
+    },
+    "desc": {
+      "kk": "Онлайн арналар арқылы брендті ілгерілету және жарнамалық науқандарды талдау.",
+      "ru": "Продвижение брендов в онлайн-каналах и аналитика рекламных кампаний.",
+      "en": "Growing brands across digital channels and optimizing campaign performance."
+    },
+    "skills": {
+      "programming": 0,
+      "algorithms": 0,
+      "mathStats": 2,
+      "dataAnalysis": 3,
+      "machineLearning": 0,
+      "uiUxDesign": 2,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 2,
+      "productStrategy": 3,
+      "digitalMarketing": 5,
+      "financeAccounting": 1,
+      "engineeringCad": 0,
+      "communication": 4,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.2,
+      "creative": 0.45,
+      "social": 0.3,
+      "technical": 0.05
+    },
+    "modules": [
+      {
+        "id": "dm_m1",
+        "title": {
+          "kk": "Performance-маркетинг негіздері",
+          "ru": "Performance-маркетинг и таргетинг",
+          "en": "Performance Marketing & Ads"
+        },
+        "skillId": "digitalMarketing",
+        "targetLevel": 5,
+        "hours": 10,
+        "difficulty": 1,
+        "prereqs": []
+      },
+      {
+        "id": "dm_m2",
+        "title": {
+          "kk": "Веб-аналитика және конверсия",
+          "ru": "Веб-аналитика и воронки продаж",
+          "en": "Web Analytics & Funnels"
+        },
+        "skillId": "dataAnalysis",
+        "targetLevel": 3,
+        "hours": 9,
+        "difficulty": 2,
+        "prereqs": [
+          "dm_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "financial_analyst",
+    "title": {
+      "kk": "Қаржы талдаушысы",
+      "ru": "Финансовый аналитик",
+      "en": "Financial Analyst"
+    },
+    "desc": {
+      "kk": "Қаржылық модельдеу, инвестицияларды бағалау және бюджетті жоспарлау.",
+      "ru": "Финансовое моделирование, оценка инвестиций и бюджетирование.",
+      "en": "Financial modeling, investment valuation, and corporate budgeting."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 1,
+      "mathStats": 4,
+      "dataAnalysis": 4,
+      "machineLearning": 1,
+      "uiUxDesign": 0,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 2,
+      "productStrategy": 2,
+      "digitalMarketing": 0,
+      "financeAccounting": 5,
+      "engineeringCad": 0,
+      "communication": 3,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.6,
+      "creative": 0.05,
+      "social": 0.2,
+      "technical": 0.15
+    },
+    "modules": [
+      {
+        "id": "fa_m1",
+        "title": {
+          "kk": "Корпоративтік қаржы және есеп",
+          "ru": "Корпоративные финансы и МСФО",
+          "en": "Corporate Finance & Accounting"
+        },
+        "skillId": "financeAccounting",
+        "targetLevel": 5,
+        "hours": 14,
+        "difficulty": 2,
+        "prereqs": []
+      },
+      {
+        "id": "fa_m2",
+        "title": {
+          "kk": "Қаржылық модельдеу",
+          "ru": "Финансовое моделирование в Excel/Python",
+          "en": "Financial Modeling"
+        },
+        "skillId": "dataAnalysis",
+        "targetLevel": 4,
+        "hours": 12,
+        "difficulty": 3,
+        "prereqs": [
+          "fa_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "petroleum_mining_eng",
+    "title": {
+      "kk": "Мұнай-газ және тау-кен инженері",
+      "ru": "Нефтегазовый и горный инженер",
+      "en": "Petroleum & Mining Engineer"
+    },
+    "desc": {
+      "kk": "Кен орындарын барлау, бұрғылау және өндіру процестерін инженерлік басқару.",
+      "ru": "Инженерное сопровождение разведки, бурения и добычи полезных ископаемых.",
+      "en": "Engineering management of exploration, drilling, and resource extraction."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 1,
+      "mathStats": 4,
+      "dataAnalysis": 3,
+      "machineLearning": 0,
+      "uiUxDesign": 0,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 3,
+      "productStrategy": 0,
+      "digitalMarketing": 0,
+      "financeAccounting": 1,
+      "engineeringCad": 5,
+      "communication": 2,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.35,
+      "creative": 0.05,
+      "social": 0.1,
+      "technical": 0.5
+    },
+    "modules": [
+      {
+        "id": "pm_eng_m1",
+        "title": {
+          "kk": "Геология және кен орындарын модельдеу",
+          "ru": "Геология и CAD-моделирование",
+          "en": "Geology & CAD Reservoir Modeling"
+        },
+        "skillId": "engineeringCad",
+        "targetLevel": 5,
+        "hours": 15,
+        "difficulty": 3,
+        "prereqs": []
+      },
+      {
+        "id": "pm_eng_m2",
+        "title": {
+          "kk": "Өндірістік қауіпсіздік және жобалау",
+          "ru": "Технология добычи и управление",
+          "en": "Extraction Operations & Safety"
+        },
+        "skillId": "projectMgmt",
+        "targetLevel": 3,
+        "hours": 10,
+        "difficulty": 2,
+        "prereqs": [
+          "pm_eng_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "civil_engineer",
+    "title": {
+      "kk": "Құрылыс инженері",
+      "ru": "Инженер-строитель",
+      "en": "Civil Engineer"
+    },
+    "desc": {
+      "kk": "Ғимараттарды, көпірлерді және инфрақұрылым нысандарын жобалау және салу.",
+      "ru": "Проектирование и возведение зданий, мостов и инфраструктурных объектов.",
+      "en": "Designing and constructing buildings, bridges, and public infrastructure."
+    },
+    "skills": {
+      "programming": 0,
+      "algorithms": 0,
+      "mathStats": 4,
+      "dataAnalysis": 2,
+      "machineLearning": 0,
+      "uiUxDesign": 1,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 4,
+      "productStrategy": 0,
+      "digitalMarketing": 0,
+      "financeAccounting": 1,
+      "engineeringCad": 5,
+      "communication": 3,
+      "pedagogy": 0
+    },
+    "aptitudes": {
+      "analytical": 0.3,
+      "creative": 0.15,
+      "social": 0.1,
+      "technical": 0.45
+    },
+    "modules": [
+      {
+        "id": "ce_m1",
+        "title": {
+          "kk": "Құрылыс механикасы және BIM/CAD",
+          "ru": "Строительная механика и BIM/CAD",
+          "en": "Structural Mechanics & BIM/CAD"
+        },
+        "skillId": "engineeringCad",
+        "targetLevel": 5,
+        "hours": 15,
+        "difficulty": 3,
+        "prereqs": []
+      },
+      {
+        "id": "ce_m2",
+        "title": {
+          "kk": "Құрылыс жобаларын басқару",
+          "ru": "Управление строительными проектами",
+          "en": "Construction Project Management"
+        },
+        "skillId": "projectMgmt",
+        "targetLevel": 4,
+        "hours": 10,
+        "difficulty": 2,
+        "prereqs": [
+          "ce_m1"
+        ]
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "teacher",
+    "title": {
+      "kk": "Мұғалім / Оқытушы",
+      "ru": "Учитель / Преподаватель",
+      "en": "Teacher / Educator"
+    },
+    "desc": {
+      "kk": "Оқушылар мен студенттерді оқыту, оқу бағдарламаларын әзірлеу және тәлімгерлік.",
+      "ru": "Обучение школьников и студентов, разработка программ и наставничество.",
+      "en": "Teaching students, developing curricula, and mentoring learners."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 1,
+      "mathStats": 2,
+      "dataAnalysis": 1,
+      "machineLearning": 0,
+      "uiUxDesign": 1,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 2,
+      "productStrategy": 0,
+      "digitalMarketing": 0,
+      "financeAccounting": 0,
+      "engineeringCad": 0,
+      "communication": 5,
+      "pedagogy": 5
+    },
+    "aptitudes": {
+      "analytical": 0.15,
+      "creative": 0.25,
+      "social": 0.55,
+      "technical": 0.05
+    },
+    "modules": [
+      {
+        "id": "tc_m1",
+        "title": {
+          "kk": "Заманауи педагогика және әдістеме",
+          "ru": "Современная педагогика и методика",
+          "en": "Modern Pedagogy & Curriculum Design"
+        },
+        "skillId": "pedagogy",
+        "targetLevel": 5,
+        "hours": 12,
+        "difficulty": 1,
+        "prereqs": []
+      },
+      {
+        "id": "tc_m2",
+        "title": {
+          "kk": "Шешендік өнер және аудиториямен жұмыс",
+          "ru": "Публичные выступления и фасилитация",
+          "en": "Public Speaking & Facilitation"
+        },
+        "skillId": "communication",
+        "targetLevel": 5,
+        "hours": 8,
+        "difficulty": 1,
+        "prereqs": []
+      }
+    ],
+    "sources": []
+  },
+  {
+    "id": "project_manager",
+    "title": {
+      "kk": "Жоба менеджері (Project Manager)",
+      "ru": "Проектный менеджер",
+      "en": "Project Manager"
+    },
+    "desc": {
+      "kk": "Жоба мерзімдерін, бюджетін, тәуекелдерін және команда жұмысын үйлестіру.",
+      "ru": "Управление сроками, бюджетом, рисками и координация работы команды.",
+      "en": "Managing project timelines, budgets, risks, and team coordination."
+    },
+    "skills": {
+      "programming": 1,
+      "algorithms": 0,
+      "mathStats": 2,
+      "dataAnalysis": 2,
+      "machineLearning": 0,
+      "uiUxDesign": 1,
+      "cybersecurity": 0,
+      "networking": 0,
+      "projectMgmt": 5,
+      "productStrategy": 3,
+      "digitalMarketing": 1,
+      "financeAccounting": 2,
+      "engineeringCad": 0,
+      "communication": 5,
+      "pedagogy": 1
+    },
+    "aptitudes": {
+      "analytical": 0.25,
+      "creative": 0.15,
+      "social": 0.5,
+      "technical": 0.1
+    },
+    "modules": [
+      {
+        "id": "prj_m1",
+        "title": {
+          "kk": "Agile, Scrum және тәуекелдерді басқару",
+          "ru": "Agile, Scrum и управление рисками",
+          "en": "Agile, Scrum & Risk Management"
+        },
+        "skillId": "projectMgmt",
+        "targetLevel": 5,
+        "hours": 12,
+        "difficulty": 2,
+        "prereqs": []
+      },
+      {
+        "id": "prj_m2",
+        "title": {
+          "kk": "Келіссөздер және командалық көшбасшылық",
+          "ru": "Переговоры и командное лидерство",
+          "en": "Negotiation & Team Leadership"
+        },
+        "skillId": "communication",
+        "targetLevel": 5,
+        "hours": 8,
+        "difficulty": 1,
+        "prereqs": []
+      }
+    ],
+    "sources": []
+  }
+]

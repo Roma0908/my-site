@@ -1,0 +1,71 @@
+export const kk = {
+  appName: 'CareerPath AI',
+  tagline: 'Қазақстан студенттері мен оқушыларына арналған ЖИ мансап навигаторы',
+  disclaimer: 'Білім беру құралы: барлық деректер бағалау сипатына ие және кәсіби кеңесті алмастырмайды. Деректер браузерде сақталады.',
+  nav: {
+    onboarding: 'Сауалнама',
+    dashboard: 'Нәтижелер',
+    compare: 'Салыстыру',
+    skillGap: 'Дағдылар алшақтығы',
+    studyPlan: 'Оқу жоспары',
+    progress: 'Прогресс',
+    bayes: 'Bayes Explorer',
+    ml: 'Model Lab',
+    csp: 'CSP Visualizer',
+    howItWorks: 'Қалай жұмыс істейді'
+  },
+  interests: {
+    mathLogic: 'Математика және логика',
+    creativityDesign: 'Шығармашылық және дизайн',
+    workingWithPeople: 'Адамдармен жұмыс',
+    buildingEngineering: 'Құрастыру және инженерия',
+    dataResearch: 'Деректер және зерттеу',
+    communication: 'Коммуникация'
+  },
+  interestLevels: ['Жоқ (0)', 'Төмен (1)', 'Орташа (2)', 'Жоғары (3)'],
+  aptitudes: {
+    analytical: 'Аналитикалық қабілет',
+    creative: 'Креативті қабілет',
+    social: 'Әлеуметтік қабілет',
+    technical: 'Техникалық қабілет'
+  },
+  skills: {
+    programming: 'Бағдарламалау',
+    algorithms: 'Алгоритмдер',
+    mathStats: 'Математика және статистика',
+    dataAnalysis: 'Деректерді талдау',
+    machineLearning: 'Машиналық оқыту',
+    uiUxDesign: 'UX/UI дизайн',
+    cybersecurity: 'Киберқауіпсіздік',
+    networking: 'Желілер',
+    projectMgmt: 'Жобаларды басқару',
+    productStrategy: 'Өнім стратегиясы',
+    digitalMarketing: 'Цифрлық маркетинг',
+    financeAccounting: 'Қаржы және есеп',
+    engineeringCad: 'Инженерлік CAD',
+    communication: 'Коммуникация',
+    pedagogy: 'Педагогика'
+  },
+  common: {
+    save: 'Сақтау',
+    reset: 'Қалпына келтіру',
+    exportJson: 'JSON экспорт',
+    importJson: 'JSON импорт',
+    presets: 'Демо профильдер',
+    hoursPerWeek: 'Аптасына сағат',
+    maxModules: 'Аптасына макс. модуль',
+    deadlineWeeks: 'Мерзім (апта)',
+    blockedWeeks: 'Бос емес апталар (үтір арқылы, мыс: 3, 6)',
+    week: 'Апта',
+    hours: 'сағ',
+    difficulty: 'Күрделілік',
+    diffLabels: ['', 'Жеңіл', 'Орташа', 'Қиын'],
+    completed: 'Аяқталды',
+    markDone: 'Орындалды деп белгілеу',
+    regenerate: 'Қайта есептеу',
+    run: 'Іске қосу',
+    step: 'Қадам',
+    play: 'Ойнату',
+    pause: 'Кідірту'
+  }
+};
