@@ -1,0 +1,71 @@
+export const ru = {
+  appName: 'CareerPath AI',
+  tagline: 'ИИ-навигатор карьеры и развития навыков для учащихся и студентов Казахстана',
+  disclaimer: 'Образовательный инструмент: все показатели являются оценочными и не заменяют профконсультацию. Данные хранятся локально в браузере.',
+  nav: {
+    onboarding: 'Анкета',
+    dashboard: 'Результаты',
+    compare: 'Сравнение',
+    skillGap: 'Разрыв навыков',
+    studyPlan: 'План обучения',
+    progress: 'Прогресс',
+    bayes: 'Bayes Explorer',
+    ml: 'Model Lab',
+    csp: 'CSP Visualizer',
+    howItWorks: 'Как это работает'
+  },
+  interests: {
+    mathLogic: 'Математика и логика',
+    creativityDesign: 'Творчество и дизайн',
+    workingWithPeople: 'Работа с людьми',
+    buildingEngineering: 'Конструирование и инженерия',
+    dataResearch: 'Данные и исследования',
+    communication: 'Коммуникация'
+  },
+  interestLevels: ['Нет (0)', 'Низкий (1)', 'Средний (2)', 'Высокий (3)'],
+  aptitudes: {
+    analytical: 'Аналитические способности',
+    creative: 'Креативные способности',
+    social: 'Социальные способности',
+    technical: 'Технические способности'
+  },
+  skills: {
+    programming: 'Программирование',
+    algorithms: 'Алгоритмы',
+    mathStats: 'Математика и статистика',
+    dataAnalysis: 'Анализ данных',
+    machineLearning: 'Машинное обучение',
+    uiUxDesign: 'UX/UI дизайн',
+    cybersecurity: 'Кибербезопасность',
+    networking: 'Компьютерные сети',
+    projectMgmt: 'Управление проектами',
+    productStrategy: 'Продуктовая стратегия',
+    digitalMarketing: 'Цифровой маркетинг',
+    financeAccounting: 'Финансы и учет',
+    engineeringCad: 'Инженерный CAD',
+    communication: 'Коммуникация',
+    pedagogy: 'Педагогика'
+  },
+  common: {
+    save: 'Сохранить',
+    reset: 'Сбросить',
+    exportJson: 'Экспорт JSON',
+    importJson: 'Импорт JSON',
+    presets: 'Демо-профили',
+    hoursPerWeek: 'Часов в неделю',
+    maxModules: 'Макс. модулей в неделю',
+    deadlineWeeks: 'Дедлайн (недель)',
+    blockedWeeks: 'Занятые недели (через запятую, напр: 3, 6)',
+    week: 'Неделя',
+    hours: 'ч',
+    difficulty: 'Сложность',
+    diffLabels: ['', 'Легкий', 'Средний', 'Сложный'],
+    completed: 'Выполнено',
+    markDone: 'Отметить выполненным',
+    regenerate: 'Пересчитать план',
+    run: 'Запустить',
+    step: 'Шаг',
+    play: 'Старт',
+    pause: 'Пауза'
+  }
+};
