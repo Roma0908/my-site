@@ -2,13 +2,10 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import careersRaw from '../data/careers.json';
 import cptRaw from '../data/bayes_cpt.json';
 import { DEMO_PRESETS } from '../data/presets';
+import { FIRST_YEAR_CURRICULUM, CourseItem } from '../data/curriculum';
 import { runBayesInference } from '../ai/bayes/inference';
 import { generateSyntheticDataset, profileToVector } from '../ai/ml/dataset';
-import {
-  rankCareersML,
-  SoftmaxModel,
-  trainSoftmaxModel
-} from '../ai/ml/softmax';
+import { rankCareersML, SoftmaxModel, trainSoftmaxModel } from '../ai/ml/softmax';
 import { solveStudyPlanCSP } from '../ai/csp/solver';
 import {
   BayesCPTData,
@@ -37,10 +34,13 @@ interface AppContextValue {
   careers: Career[];
   cpt: BayesCPTData;
   profile: UserProfile;
+  effectiveSkills: Record<string, number>;
   updateProfile: (next: UserProfile) => void;
   applyPreset: (key: string) => void;
   completeModule: (mod: LearningModule) => void;
   recordSnapshot: (label: string) => void;
+  courseStatuses: Record<string, CourseItem['defaultStatus']>;
+  cycleCourseStatus: (code: string) => void;
   bayesResults: BayesCareerResult[];
   mlPredictions: MLPrediction[];
   mlMetrics: MLMetrics;
@@ -61,7 +61,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [profile, setProfile] = useState<UserProfile>(() => loadProfile());
   const [selectedCareerId, setSelectedCareerId] = useState<string>('ml_engineer');
-
   const [mlParams, setMlParams] = useState<MLHyperparams>({
     learningRate: 0.8,
     epochs: 120,
@@ -70,6 +69,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
   const [knnK, setKnnK] = useState<number>(5);
   const [isTrainingML, setIsTrainingML] = useState<boolean>(false);
+
+  // Статусы университетских дисциплин 1 курса
+  const [courseStatuses, setCourseStatuses] = useState<Record<string, CourseItem['defaultStatus']>>(() => {
+    const initial: Record<string, CourseItem['defaultStatus']> = {};
+    FIRST_YEAR_CURRICULUM.forEach((c) => {
+      initial[c.code] = c.defaultStatus;
+    });
+    return initial;
+  });
 
   const initialML = useMemo(() => {
     const split = generateSyntheticDataset(careers, 42, 250);
@@ -92,6 +100,109 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const preset = DEMO_PRESETS[key];
     if (preset) {
       updateProfile(structuredClone(preset));
+    }
+  };
+
+  // Автоматический расчёт навыков с учётом освоенных дисциплин 1 курса
+  const effectiveSkills = useMemo(() => {
+    const boosted: Record<string, number> = { ...profile.skills };
+
+    FIRST_YEAR_CURRICULUM.forEach((course) => {
+      if (courseStatuses[course.code] === 'completed') {
+        course.relatedSkills.forEach((skillKey) => {
+          if (skillKey in boosted) {
+            boosted[skillKey] = Math.min(5, Number((boosted[skillKey] + 0.8).toFixed(1)));
+          }
+        });
+      }
+    });
+
+    return boosted;
+  }, [profile.skills, courseStatuses]);
+
+  const bayesResults = useMemo(
+    () => runBayesInference(profile.interests, cpt, careers),
+    [profile.interests]
+  );
+
+  // ML-модель теперь использует effectiveSkills (навыки + освоенные предметы)
+  const mlPredictions = useMemo(
+    () =>
+      rankCareersML(
+        mlModel,
+        profileToVector({ interests: profile.interests, skills: effectiveSkills }),
+        careers
+      ),
+    [mlModel, profile.interests, effectiveSkills]
+  );
+
+  const targetModules = useMemo(() => {
+    const career = careers.find((c) => c.id === selectedCareerId) ?? careers[0];
+    return career.modules.filter(
+      (m) =>
+        !profile.completedModules.includes(m.id) &&
+        (effectiveSkills[m.skillId] ?? 0) < m.targetLevel
+    );
+  }, [selectedCareerId, profile.completedModules, effectiveSkills]);
+
+  const cspResult = useMemo(
+    () => solveStudyPlanCSP(targetModules, profile.constraints),
+    [targetModules, profile.constraints]
+  );
+
+  // Переключение статуса дисциплины и запись точки в график «Прогресс»
+  const cycleCourseStatus = (code: string) => {
+    const current = courseStatuses[code];
+    const next: CourseItem['defaultStatus'] =
+      current === 'planned'
+        ? 'in_progress'
+        : current === 'in_progress'
+        ? 'completed'
+        : 'planned';
+
+    const nextStatuses = { ...courseStatuses, [code]: next };
+    setCourseStatuses(nextStatuses);
+
+    // Если дисциплина переведена в статус "Освоено", добавляем точку на график прогресса
+    if (next === 'completed') {
+      const course = FIRST_YEAR_CURRICULUM.find((c) => c.code === code);
+      const nextBoosted: Record<string, number> = { ...profile.skills };
+
+      FIRST_YEAR_CURRICULUM.forEach((c) => {
+        if (nextStatuses[c.code] === 'completed') {
+          c.relatedSkills.forEach((skillKey) => {
+            if (skillKey in nextBoosted) {
+              nextBoosted[skillKey] = Math.min(5, Number((nextBoosted[skillKey] + 0.8).toFixed(1)));
+            }
+          });
+        }
+      });
+
+      const nextML = rankCareersML(
+        mlModel,
+        profileToVector({ interests: profile.interests, skills: nextBoosted }),
+        careers
+      );
+      const topId = nextML[0]?.careerId ?? selectedCareerId;
+      const topBayes = bayesResults.find((b) => b.careerId === topId)?.probability ?? 0;
+      const completedCoursesCount = Object.values(nextStatuses).filter(
+        (s) => s === 'completed'
+      ).length;
+
+      updateProfile({
+        ...profile,
+        history: [
+          ...profile.history,
+          {
+            date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            label: course ? `${course.code}: ${course.title[lang]}` : code,
+            topCareerId: topId,
+            bayesScore: Math.round(topBayes * 100),
+            mlScore: Math.round((nextML[0]?.probability ?? 0) * 100),
+            completedCount: profile.completedModules.length + completedCoursesCount
+          }
+        ]
+      });
     }
   };
 
@@ -129,30 +240,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const bayesResults = useMemo(
-    () => runBayesInference(profile.interests, cpt, careers),
-    [profile.interests]
-  );
-
-  const mlPredictions = useMemo(
-    () => rankCareersML(mlModel, profileToVector(profile), careers),
-    [mlModel, profile.interests, profile.skills]
-  );
-
-  const targetModules = useMemo(() => {
-    const career = careers.find((c) => c.id === selectedCareerId) ?? careers[0];
-    return career.modules.filter(
-      (m) =>
-        !profile.completedModules.includes(m.id) &&
-        (profile.skills[m.skillId] ?? 0) < m.targetLevel
-    );
-  }, [selectedCareerId, profile.completedModules, profile.skills]);
-
-  const cspResult = useMemo(
-    () => solveStudyPlanCSP(targetModules, profile.constraints),
-    [targetModules, profile.constraints]
-  );
-
   const completeModule = (mod: LearningModule) => {
     if (profile.completedModules.includes(mod.id)) return;
     const nextSkills = {
@@ -160,7 +247,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       [mod.skillId]: Math.max(profile.skills[mod.skillId] ?? 0, mod.targetLevel)
     };
     const nextCompleted = [...profile.completedModules, mod.id];
-    const nextML = rankCareersML(mlModel, profileToVector({ interests: profile.interests, skills: nextSkills }), careers);
+    const nextML = rankCareersML(
+      mlModel,
+      profileToVector({ interests: profile.interests, skills: nextSkills }),
+      careers
+    );
     const topId = nextML[0]?.careerId ?? selectedCareerId;
     const topBayes = bayesResults.find((b) => b.careerId === topId)?.probability ?? 0;
 
@@ -213,10 +304,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         careers,
         cpt,
         profile,
+        effectiveSkills,
         updateProfile,
         applyPreset,
         completeModule,
         recordSnapshot,
+        courseStatuses,
+        cycleCourseStatus,
         bayesResults,
         mlPredictions,
         mlMetrics,
